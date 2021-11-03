@@ -18,3 +18,11 @@ build-backend = "poetry.core.masonry.api"
 
 [tool.poetry.scripts]
 teraki_examples = "remote_operation_api_examples.runner.main:cli"
+
+[tool.isort]
+profile = "black"
+
+[tool.black]
+line-length = 119
+target-version = ['py37']
+include = '\.pyi?$'
