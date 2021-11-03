@@ -1,23 +1,32 @@
 import pkgutil
+from inspect import getmembers, isfunction
 
 import click
+from config import Config
 from remote_operation_api_examples import examples
+
+TERAKI_URL="https://api-remote-operations.test.teraki.com/"
+
 
 
 @click.group()
 def cli():
     pass
-
+@click.option('--password', prompt='Your password',
+              )
+@click.option('--username', type=str, prompt='Your username')
+@click.option('--platform_url', type=str, default=TERAKI_URL)
 @cli.command()
-def all():
+def all(username, password, platform_url):
     click.echo("Executing all examples\n"+"*"*80)
     prefix = examples.__name__ + "."
+    config = Config(username,password,platform_url)
     for importer, modname, ispkg in pkgutil.iter_modules(examples.__path__, prefix):
         module = __import__(modname, fromlist="dummy")
-        for func_name, func in module.__dict__.items():
-            if callable(func):
+        for func_name, func in getmembers(module,isfunction):
+            if callable(func) and func.__module__==modname:
                 click.echo(f"Executing {func_name} in module {modname}\n"+"."*80)
-                func()
+                func(config)
                 click.echo("-"*80)
 
 if __name__ == '__main__':
