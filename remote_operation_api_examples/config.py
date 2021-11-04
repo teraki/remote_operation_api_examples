@@ -1,4 +1,5 @@
 import dataclasses
+from typing import Optional
 from urllib.parse import urljoin
 from uuid import UUID
 
@@ -20,13 +21,21 @@ def create_session(base_url, username, password):
     return session
 
 
+def get_user_id(session: Session, platform_url) -> UUID:
+    response_me = session.post(
+        urljoin(platform_url, "/auth/me"),
+    )
+    response_me.raise_for_status()
+    return response_me.json()["id"]
+
+
 @dataclasses.dataclass
 class Config:
     username: str
     password: str
     platform_url: str
-    user_id: UUID  # todo remove once the endpoint to retrieve the user_id is available
-    _session = None
+    _user_id: UUID = None
+    _session: Optional[Session] = None
 
     @property
     def session(self):
@@ -34,3 +43,10 @@ class Config:
             return self._session
         self._session = create_session(self.platform_url, self.username, self.password)
         return self._session
+
+    @property
+    def user_id(self):
+        if self._user_id:
+            return self._user_id
+        self._user_id = get_user_id(self.session, platform_url=self.platform_url)
+        return self._user_id
