@@ -1,5 +1,6 @@
 import pkgutil
 from inspect import getmembers, isfunction
+from uuid import UUID
 
 import click
 
@@ -19,12 +20,18 @@ def cli():
     prompt="Your password",
 )
 @click.option("-u", "--username", type=str, prompt="Your username")
+@click.option(
+    "-id",
+    "--user_id",
+    type=UUID,
+    prompt="Your user id",
+)  # todo remove once the endpoint to retrieve the user_id is available
 @click.option("-p", "--platform_url", type=str, default=TERAKI_URL)
 @cli.command()
-def all(username, password, platform_url):
+def all(username, password, platform_url, user_id):
     click.echo("Executing all examples\n" + "*" * 80)
     prefix = examples.__name__ + "."
-    config = Config(username, password, platform_url)
+    config = Config(username, password, platform_url, user_id)
     for importer, modname, ispkg in pkgutil.iter_modules(examples.__path__, prefix):
         module = __import__(modname, fromlist="dummy")
         for func_name, func in getmembers(module, isfunction):
