@@ -6,9 +6,9 @@ from config import Config
 
 def create_and_delete_customer_branch(config: Config):
     """
-    We show how to handle basic CRUD operations using the entity Customer Branch as an example.
-    We create one instance of a customer branch providing fake values, we check that the creation is successful,
-    we GET the same entity again to demonstrate the GET endpoint and then we delete it afterwards.
+    This example shows how to handle basic CRUD operations using the entity Customer Branch as an example.
+    It creates one instance of a customer branch providing fake values, checks that the creation is successful,
+    performs a GET on the same entity again to demonstrate the GET endpoint and then deletes it afterwards.
     """
     session = config.session
     response = session.post(

@@ -30,8 +30,10 @@ def all(username, password, platform_url):
         for func_name, func in getmembers(module, isfunction):
             if callable(func) and func.__module__ == modname:
                 click.echo(f"Executing {func_name} in module {modname}\n" + "." * 80)
+                click.echo(func.__doc__)
+                click.echo("." * 80)
                 func(config)
-                click.echo("-" * 80)
+                click.echo("/\\" * 40)
 
 
 if __name__ == "__main__":
