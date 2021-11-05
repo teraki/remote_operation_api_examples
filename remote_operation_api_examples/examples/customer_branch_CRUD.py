@@ -1,7 +1,7 @@
 from json import dumps
 from urllib.parse import urljoin
 
-from config import Config
+from remote_operation_api_examples.config import Config
 
 
 def create_and_delete_customer_branch(config: Config):

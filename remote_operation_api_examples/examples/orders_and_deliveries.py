@@ -1,7 +1,7 @@
 from urllib.parse import urljoin
 
-from config import Config
-from utils import create_customer_branch
+from remote_operation_api_examples.config import Config
+from remote_operation_api_examples.utils import create_customer_branch
 
 
 def create_order(config: Config):
