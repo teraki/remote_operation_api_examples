@@ -4,6 +4,13 @@ from remote_operation_api_examples.config import Config
 from remote_operation_api_examples.utils import create_customer_branch
 
 
+def list_vehicles(config: Config):
+    """This examples shows how to list the vehicles"""
+    response = config.session.get(url=urljoin(config.platform_url, "vehicles/"))
+    response.raise_for_status()
+    print(f"Vehicles successfully retrieved\n {response.json()}")
+
+
 def create_order(config: Config):
     """
     This example shows how to create an order
@@ -48,3 +55,11 @@ def create_delivery(config: Config):
     response.raise_for_status()
 
     print("Delivery successfully created")
+
+    delivery_id = response.json()["id"]
+
+    # we retrieve the delivery to verify it's correctly created
+    response = config.session.get(url=urljoin(config.platform_url, f"deliveries/{delivery_id}"))
+    response.raise_for_status()
+
+    print(f"Delivery successfully created\n{response.json()}")
